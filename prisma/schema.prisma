@@ -1,0 +1,107 @@
+// IT Asset & Knowledge Management System
+// Prisma Schema — from SRS Section 4.1
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── USERS ───────────────────────────────────────────────
+model User {
+  id        String     @id @default(cuid())
+  name      String
+  email     String     @unique
+  password  String     // bcrypt hash
+  role      Role       @default(EMPLOYEE)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  borrowings BorrowLog[]
+  issues     Issue[]
+}
+
+// ─── ASSETS ──────────────────────────────────────────────
+model Asset {
+  id          String   @id @default(cuid())
+  name        String
+  category    String   // "Mobile Device" | "Laptop" | "Monitor" | "Server" | "Peripheral"
+  serialNo    String   @unique
+  brand       String?
+  description String?
+  status      Status   @default(AVAILABLE)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  borrowings BorrowLog[]
+  issues     Issue[]
+}
+
+// ─── BORROW LOGS ─────────────────────────────────────────
+model BorrowLog {
+  id          String       @id @default(cuid())
+  assetId     String
+  userId      String
+  borrowDate  DateTime     @default(now())
+  returnDate  DateTime?
+  dueDate     DateTime     // deadline pengembalian
+  status      BorrowStatus @default(PENDING)
+  notes       String?      // catatan dari peminjam
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  asset Asset @relation(fields: [assetId], references: [id])
+  user  User  @relation(fields: [userId], references: [id])
+}
+
+// ─── ISSUES ──────────────────────────────────────────────
+model Issue {
+  id          String     @id @default(cuid())
+  title       String
+  description String
+  status      IssueState @default(OPEN)
+  priority    Priority   @default(MEDIUM)
+  assetId     String
+  reportedBy  String
+  resolvedAt  DateTime?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  asset Asset @relation(fields: [assetId], references: [id])
+  user  User  @relation(fields: [reportedBy], references: [id])
+}
+
+// ─── ENUMS ───────────────────────────────────────────────
+enum Role {
+  EMPLOYEE
+  IT_ADMIN
+}
+
+enum Status {
+  AVAILABLE
+  BORROWED
+  MAINTENANCE
+}
+
+enum BorrowStatus {
+  PENDING    // menunggu persetujuan IT Admin
+  APPROVED   // disetujui, aset sedang dipinjam
+  REJECTED   // ditolak
+  RETURNED   // sudah dikembalikan
+}
+
+enum IssueState {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
