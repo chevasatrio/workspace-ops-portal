@@ -1,8 +1,8 @@
-# 🖥️ IT Asset & Knowledge Management System
+# IT Asset & Knowledge Management System
 
 Sistem manajemen aset IT internal, peminjaman barang, pelaporan kerusakan (issue tracker), dan sentralisasi basis pengetahuan (knowledge base).
 
-## 🚀 Tech Stack
+## Tech Stack
 
 - **Framework**: [Next.js 14](https://nextjs.org/) (App Router)
 - **Styling**: [Tailwind CSS 3.x](https://tailwindcss.com/)
@@ -11,7 +11,7 @@ Sistem manajemen aset IT internal, peminjaman barang, pelaporan kerusakan (issue
 - **Authentication**: [NextAuth.js v4](https://next-auth.js.org/) (Credentials Provider dengan bcrypt)
 - **CMS**: [Strapi v4](https://strapi.io/) *(untuk fitur Knowledge Base - menyusul di Fase 6)*
 
-## 🛠️ Persiapan Lingkungan (Environment Variables)
+## Persiapan Lingkungan (Environment Variables)
 
 Salin file `.env.local.example` (jika ada) ke `.env.local` atau buat file `.env.local` di root folder dengan isi berikut:
 
@@ -31,7 +31,7 @@ STRAPI_URL="http://localhost:1337"
 STRAPI_API_TOKEN=""
 ```
 
-## 📦 Instalasi & Setup
+## Instalasi & Setup
 
 1. **Install Dependencies**
    ```bash
@@ -57,7 +57,7 @@ STRAPI_API_TOKEN=""
    npx prisma db seed
    ```
 
-## 🔑 Akun Uji Coba (Dummy Accounts)
+##  Akun Uji Coba (Dummy Accounts)
 
 Setelah menjalankan `npx prisma db seed`, Anda dapat login menggunakan kredensial berikut:
 
@@ -67,7 +67,7 @@ Setelah menjalankan `npx prisma db seed`, Anda dapat login menggunakan kredensia
 | **Karyawan 1** | `john@company.com` | `employee123` |
 | **Karyawan 2** | `jane@company.com` | `employee123` |
 
-## 💻 Menjalankan Aplikasi
+## Menjalankan Aplikasi
 
 Jalankan mode pengembangan (development server):
 
@@ -77,7 +77,7 @@ npm run dev
 
 Akses [http://localhost:3000](http://localhost:3000) di browser Anda. Aplikasi akan me-redirect Anda ke halaman `/login` jika belum melakukan autentikasi.
 
-## 🗂️ Struktur Proyek Saat Ini
+## Struktur Proyek Saat Ini
 
 - `/app`: App Router Next.js (berisi route autentikasi dan API).
 - `/app/api`: Backend API.
