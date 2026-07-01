@@ -6,6 +6,7 @@ import { StatusBadge } from "@/components/StatusBadge";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { ArrowLeft, Trash2, Edit, AlertTriangle } from "lucide-react";
+import { AssetModal } from "@/components/AssetModal";
 
 export default function AssetDetailPage() {
   const params = useParams();
@@ -15,27 +16,28 @@ export default function AssetDetailPage() {
   
   const [asset, setAsset] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  const fetchAsset = async () => {
+    try {
+      const id = Array.isArray(params.id) ? params.id[0] : params.id;
+      if (!id) return;
+
+      const res = await fetch(`/api/assets/${id}`);
+      if (res.ok) {
+        const json = await res.json();
+        setAsset(json.data);
+      } else {
+        router.push("/assets");
+      }
+    } catch (error) {
+      console.error("Error fetching asset details:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchAsset = async () => {
-      try {
-        const id = Array.isArray(params.id) ? params.id[0] : params.id;
-        if (!id) return;
-
-        const res = await fetch(`/api/assets/${id}`);
-        if (res.ok) {
-          const json = await res.json();
-          setAsset(json.data);
-        } else {
-          router.push("/assets");
-        }
-      } catch (error) {
-        console.error("Error fetching asset details:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
     if (params.id) fetchAsset();
   }, [params.id, router]);
 
@@ -70,7 +72,10 @@ export default function AssetDetailPage() {
         </h2>
         {isAdmin && (
           <div className="flex items-center gap-2">
-            <button className="inline-flex items-center gap-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 px-4 py-2 rounded-lg font-medium text-sm transition-colors shadow-sm">
+            <button 
+              onClick={() => setIsEditModalOpen(true)}
+              className="inline-flex items-center gap-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 px-4 py-2 rounded-lg font-medium text-sm transition-colors shadow-sm"
+            >
               <Edit className="w-4 h-4" /> Edit
             </button>
             <button 
@@ -163,6 +168,15 @@ export default function AssetDetailPage() {
           </div>
         </div>
       </div>
+
+      <AssetModal 
+        isOpen={isEditModalOpen} 
+        onClose={() => setIsEditModalOpen(false)} 
+        asset={asset}
+        onSuccess={() => {
+          fetchAsset();
+        }}
+      />
     </div>
   );
 }

@@ -5,6 +5,7 @@ import { StatusBadge } from "@/components/StatusBadge";
 import { Search, Filter, Plus } from "lucide-react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { AssetModal } from "@/components/AssetModal";
 
 interface Asset {
   id: string;
@@ -23,6 +24,7 @@ export default function AssetsPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchAssets = async () => {
     setLoading(true);
@@ -56,7 +58,10 @@ export default function AssetsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <h2 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Katalog Aset</h2>
         {isAdmin && (
-          <button className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-blue-600 text-white hover:bg-blue-700 h-10 px-4 py-2">
+          <button 
+            onClick={() => setIsModalOpen(true)}
+            className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-blue-600 text-white hover:bg-blue-700 h-10 px-4 py-2"
+          >
             <Plus className="mr-2 h-4 w-4" /> Tambah Aset
           </button>
         )}
@@ -137,6 +142,14 @@ export default function AssetsPage() {
           </table>
         </div>
       </div>
+
+      <AssetModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        onSuccess={() => {
+          fetchAssets();
+        }}
+      />
     </div>
   );
 }
