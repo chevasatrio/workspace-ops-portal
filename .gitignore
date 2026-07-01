@@ -45,3 +45,6 @@ next-env.d.ts
 # AI agent config
 AGENTS.md
 CLAUDE.md
+
+# Strapi CMS (we will deploy this separately or manage its own repo if needed)
+/cms

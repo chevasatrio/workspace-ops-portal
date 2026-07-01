@@ -5,7 +5,7 @@ import { Search, Filter, Plus, AlertCircle, Clock, CheckCircle2 } from "lucide-r
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { formatDate } from "@/lib/utils";
-
+import EmptyState from "@/components/EmptyState";
 interface User {
   id: string;
   name: string;
@@ -187,8 +187,12 @@ export default function IssuesPage() {
                 </tr>
               ) : issues.length === 0 ? (
                 <tr>
-                  <td colSpan={isAdmin ? 5 : 4} className="px-6 py-12 text-center text-slate-500">
-                    Tidak ada issue yang ditemukan.
+                  <td colSpan={isAdmin ? 5 : 4} className="p-0">
+                    <EmptyState 
+                      icon={AlertCircle} 
+                      title="Tidak Ada Issue" 
+                      description="Belum ada pelaporan masalah (issue) yang tercatat atau cocok dengan filter Anda." 
+                    />
                   </td>
                 </tr>
               ) : (

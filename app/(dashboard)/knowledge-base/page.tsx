@@ -1,7 +1,7 @@
 import { fetchAPI } from "@/lib/strapi";
 import Link from "next/link";
 import { BookOpen, ChevronRight, Search, FileText } from "lucide-react";
-
+import EmptyState from "@/components/EmptyState";
 export const metadata = {
   title: "Knowledge Base | OpsPortal",
   description: "IT Asset & Knowledge Management",
@@ -62,11 +62,11 @@ export default async function KnowledgeBasePage() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           <div className="lg:col-span-3 space-y-4">
             {articles.length === 0 ? (
-              <div className="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl p-12 text-center shadow-sm">
-                <FileText className="w-12 h-12 text-slate-300 dark:text-slate-700 mx-auto mb-3" />
-                <h3 className="text-lg font-medium text-slate-900 dark:text-white">No articles found</h3>
-                <p className="text-slate-500 mt-1">Check back later for new guides and tutorials.</p>
-              </div>
+              <EmptyState 
+                icon={FileText} 
+                title="Tidak Ada Artikel" 
+                description="Belum ada artikel panduan yang diterbitkan. Silakan cek kembali nanti." 
+              />
             ) : (
               articles.map((article: any) => (
                 <Link 

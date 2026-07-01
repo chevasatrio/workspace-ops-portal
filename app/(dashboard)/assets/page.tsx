@@ -6,7 +6,7 @@ import { Search, Filter, Plus } from "lucide-react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { AssetModal } from "@/components/AssetModal";
-
+import EmptyState from "@/components/EmptyState";
 interface Asset {
   id: string;
   name: string;
@@ -114,8 +114,12 @@ export default function AssetsPage() {
                 </tr>
               ) : assets.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center text-slate-500">
-                    Tidak ada aset yang ditemukan.
+                  <td colSpan={5} className="p-0">
+                    <EmptyState 
+                      icon={Search} 
+                      title="Tidak Ada Aset" 
+                      description="Aset yang Anda cari tidak ditemukan. Coba ubah kata kunci pencarian atau filter status." 
+                    />
                   </td>
                 </tr>
               ) : (

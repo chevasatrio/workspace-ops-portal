@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { Plus, CheckCircle, XCircle, RefreshCw } from "lucide-react";
 import { StatusBadge } from "@/components/StatusBadge";
-
+import EmptyState from "@/components/EmptyState";
 export default function BorrowingsPage() {
   const { data: session } = useSession();
   const isAdmin = session?.user?.role === "IT_ADMIN";
@@ -107,8 +107,12 @@ export default function BorrowingsPage() {
                 </tr>
               ) : borrowings.length === 0 ? (
                 <tr>
-                  <td colSpan={isAdmin ? 6 : 5} className="px-6 py-12 text-center text-slate-500">
-                    Tidak ada riwayat peminjaman.
+                  <td colSpan={isAdmin ? 6 : 5} className="p-0">
+                    <EmptyState 
+                      icon={ClipboardList} 
+                      title="Tidak Ada Peminjaman" 
+                      description="Belum ada riwayat peminjaman aset yang tercatat saat ini." 
+                    />
                   </td>
                 </tr>
               ) : (

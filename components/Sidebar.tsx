@@ -24,7 +24,7 @@ export default function Sidebar({ user }: { user: any }) {
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 bg-white dark:bg-slate-950 border-r border-slate-200 dark:border-slate-800 flex flex-col shrink-0">
+    <aside className="w-64 h-full bg-white dark:bg-slate-950 border-r border-slate-200 dark:border-slate-800 flex flex-col shrink-0">
       <div className="h-16 flex items-center px-6 border-b border-slate-200 dark:border-slate-800">
         <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">OpsPortal</h1>
       </div>
