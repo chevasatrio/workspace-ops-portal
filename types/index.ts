@@ -1,4 +1,4 @@
-import type { Role, Status, BorrowStatus, IssueState, Priority } from "@/app/generated/prisma";
+import type { Role, Status, BorrowStatus, IssueState, Priority } from "@prisma/client";
 
 // ─── NextAuth Session Extension ──────────────────────────
 declare module "next-auth" {

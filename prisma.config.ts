@@ -11,11 +11,11 @@ export default defineConfig({
   schema: "prisma/schema.prisma",
   migrations: {
     path: "prisma/migrations",
+    seed: "npx tsx prisma/seed.ts",
   },
   datasource: {
-    // Connection pooler URL (port 6543) for application queries
-    url: process.env["DATABASE_URL"],
-    // Direct connection URL (port 5432) for Prisma migrations
-    directUrl: process.env["DIRECT_URL"],
+    // Use DIRECT_URL (port 5432) for Prisma CLI operations (migrations, push, seed)
+    // The app itself will use DATABASE_URL (port 6543 pooler) via PrismaClient
+    url: process.env["DIRECT_URL"] || process.env["DATABASE_URL"],
   },
 });

@@ -2,8 +2,7 @@
 // Prisma Schema — from SRS Section 4.1
 
 generator client {
-  provider = "prisma-client"
-  output   = "../app/generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {

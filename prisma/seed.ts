@@ -1,6 +1,12 @@
-import { prisma } from "./prisma";
+import { PrismaClient } from "@prisma/client";
+import { Pool } from "pg";
+import { PrismaPg } from "@prisma/adapter-pg";
 import bcrypt from "bcryptjs";
 
+process.env.DATABASE_URL = process.env.DIRECT_URL || process.env.DATABASE_URL;
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const adapter = new PrismaPg(pool);
+const prisma = new PrismaClient({ adapter });
 const SALT_ROUNDS = 12;
 
 /**
@@ -103,7 +109,7 @@ async function main() {
       where: { serialNo: "LG-27UL-2024-001" },
       update: {},
       create: {
-        name: "LG 27\" 4K Monitor",
+        name: 'LG 27" 4K Monitor',
         category: "Monitor",
         serialNo: "LG-27UL-2024-001",
         brand: "LG",
