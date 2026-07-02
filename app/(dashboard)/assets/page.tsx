@@ -58,12 +58,21 @@ export default function AssetsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <h2 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Katalog Aset</h2>
         {isAdmin && (
-          <button 
-            onClick={() => setIsModalOpen(true)}
-            className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-blue-600 text-white hover:bg-blue-700 h-10 px-4 py-2"
-          >
-            <Plus className="mr-2 h-4 w-4" /> Tambah Aset
-          </button>
+          <div className="flex gap-2">
+            <Link 
+              href="/assets/import"
+              className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-900 dark:text-white h-10 px-4 py-2"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-file-up mr-2"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M12 12v6"/><path d="m15 15-3-3-3 3"/></svg>
+              Import CSV
+            </Link>
+            <button 
+              onClick={() => setIsModalOpen(true)}
+              className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-blue-600 text-white hover:bg-blue-700 h-10 px-4 py-2"
+            >
+              <Plus className="mr-2 h-4 w-4" /> Tambah Aset
+            </button>
+          </div>
         )}
       </div>
 
@@ -102,19 +111,20 @@ export default function AssetsPage() {
                 <th className="px-6 py-4">Kategori</th>
                 <th className="px-6 py-4">Serial No.</th>
                 <th className="px-6 py-4">Status</th>
+                <th className="px-6 py-4 text-center">QR</th>
                 <th className="px-6 py-4 text-right">Aksi</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
               {loading ? (
                 <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center text-slate-500">
+                  <td colSpan={6} className="px-6 py-12 text-center text-slate-500">
                     <div className="flex justify-center items-center">Memuat data...</div>
                   </td>
                 </tr>
               ) : assets.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="p-0">
+                  <td colSpan={6} className="p-0">
                     <EmptyState 
                       icon={Search} 
                       title="Tidak Ada Aset" 
@@ -131,7 +141,16 @@ export default function AssetsPage() {
                     <td className="px-6 py-4">
                       <StatusBadge status={asset.status} />
                     </td>
-                    <td className="px-6 py-4 text-right">
+                    <td className="px-6 py-4 text-center">
+                      <Link
+                        href={`/assets/${asset.id}/qr`}
+                        className="inline-flex p-2 text-slate-500 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-md transition-colors"
+                        title="Lihat QR Code"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-qr-code"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/></svg>
+                      </Link>
+                    </td>
+                    <td className="px-6 py-4 text-right space-x-3">
                       <Link 
                         href={`/assets/${asset.id}`}
                         className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-medium"

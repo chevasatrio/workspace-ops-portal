@@ -11,6 +11,7 @@ import {
   BookOpen, 
   LogOut 
 } from "lucide-react";
+import { ThemeToggle } from "./ThemeToggle";
 
 const navItems = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
@@ -25,8 +26,9 @@ export default function Sidebar({ user }: { user: any }) {
 
   return (
     <aside className="w-64 h-full bg-white dark:bg-slate-950 border-r border-slate-200 dark:border-slate-800 flex flex-col shrink-0">
-      <div className="h-16 flex items-center px-6 border-b border-slate-200 dark:border-slate-800">
+      <div className="h-16 flex items-center justify-between px-6 border-b border-slate-200 dark:border-slate-800">
         <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">OpsPortal</h1>
+        <ThemeToggle />
       </div>
       
       <nav className="flex-1 overflow-y-auto py-4 px-3 space-y-1">

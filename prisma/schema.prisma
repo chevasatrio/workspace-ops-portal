@@ -1,6 +1,3 @@
-// IT Asset & Knowledge Management System
-// Prisma Schema — from SRS Section 4.1
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,16 +8,18 @@ datasource db {
 
 // ─── USERS ───────────────────────────────────────────────
 model User {
-  id        String     @id @default(cuid())
+  id        String   @id @default(cuid())
   name      String
-  email     String     @unique
-  password  String     // bcrypt hash
-  role      Role       @default(EMPLOYEE)
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  email     String   @unique
+  password  String   // bcrypt hash
+  role      Role     @default(EMPLOYEE)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  borrowings BorrowLog[]
-  issues     Issue[]
+  borrowings    BorrowLog[]
+  issues        Issue[]
+  notifications Notification[]
+  auditLogs     AuditLog[]
 }
 
 // ─── ASSETS ──────────────────────────────────────────────
@@ -32,11 +31,13 @@ model Asset {
   brand       String?
   description String?
   status      Status   @default(AVAILABLE)
+  qrCode      String?  // base64 QR image atau URL
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  borrowings BorrowLog[]
-  issues     Issue[]
+  borrowings   BorrowLog[]
+  issues       Issue[]
+  maintenances MaintenanceSchedule[]
 }
 
 // ─── BORROW LOGS ─────────────────────────────────────────
@@ -73,6 +74,48 @@ model Issue {
   user  User  @relation(fields: [reportedBy], references: [id])
 }
 
+// ─── NOTIFICATIONS ───────────────────────────────────────
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  type      NotificationType
+  title     String
+  message   String
+  isRead    Boolean          @default(false)
+  link      String?          // URL halaman terkait (misal: /borrowings/clx...)
+  createdAt DateTime         @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+// ─── AUDIT LOGS ──────────────────────────────────────────
+model AuditLog {
+  id         String   @id @default(cuid())
+  userId     String
+  action     String   // "ASSET_CREATED" | "BORROW_APPROVED" | "ISSUE_RESOLVED" | dll
+  entity     String   // "Asset" | "BorrowLog" | "Issue"
+  entityId   String   // ID record yang diubah
+  metadata   Json?    // data tambahan: { before: {...}, after: {...} }
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+// ─── MAINTENANCE SCHEDULE ────────────────────────────────
+model MaintenanceSchedule {
+  id           String            @id @default(cuid())
+  assetId      String
+  title        String            // "Service rutin Q1 2025"
+  description  String?
+  scheduledAt  DateTime          // kapan maintenance dijadwalkan
+  completedAt  DateTime?
+  status       MaintenanceStatus @default(SCHEDULED)
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  asset Asset @relation(fields: [assetId], references: [id])
+}
+
 // ─── ENUMS ───────────────────────────────────────────────
 enum Role {
   EMPLOYEE
@@ -103,4 +146,20 @@ enum Priority {
   MEDIUM
   HIGH
   CRITICAL
+}
+
+enum NotificationType {
+  BORROW_APPROVED    // peminjaman disetujui
+  BORROW_REJECTED    // peminjaman ditolak
+  BORROW_DUE_SOON   // due date H-1
+  BORROW_OVERDUE    // melewati due date
+  ISSUE_UPDATED     // status issue berubah
+  MAINTENANCE_DUE   // jadwal maintenance tiba
+}
+
+enum MaintenanceStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
 }
