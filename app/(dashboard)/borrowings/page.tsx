@@ -116,8 +116,10 @@ export default function BorrowingsPage() {
                   </td>
                 </tr>
               ) : (
-                borrowings.map((borrow) => (
-                  <tr key={borrow.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                borrowings.map((borrow) => {
+                  const isOverdue = borrow.status === "APPROVED" && new Date(borrow.dueDate) < new Date();
+                  return (
+                  <tr key={borrow.id} className={`hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors ${isOverdue ? 'bg-red-50/50 dark:bg-red-900/10' : ''}`}>
                     {isAdmin && (
                       <td className="px-6 py-4 font-medium text-slate-900 dark:text-white">
                         {borrow.user?.name}
@@ -131,9 +133,20 @@ export default function BorrowingsPage() {
                       <p>{new Date(borrow.borrowDate).toLocaleDateString("id-ID", { dateStyle: "medium" })}</p>
                       <p className="text-xs text-slate-500 mt-0.5">{new Date(borrow.borrowDate).toLocaleTimeString("id-ID", { timeStyle: "short" })}</p>
                     </td>
-                    <td className="px-6 py-4 text-slate-600 dark:text-slate-300">
-                      <p>{new Date(borrow.dueDate).toLocaleDateString("id-ID", { dateStyle: "medium" })}</p>
-                      <p className="text-xs text-slate-500 mt-0.5">{new Date(borrow.dueDate).toLocaleTimeString("id-ID", { timeStyle: "short" })}</p>
+                    <td className="px-6 py-4">
+                      {isOverdue ? (
+                        <div>
+                          <p className="font-semibold text-red-600 dark:text-red-400">{new Date(borrow.dueDate).toLocaleDateString("id-ID", { dateStyle: "medium" })}</p>
+                          <span className="inline-flex items-center rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700 dark:bg-red-900/30 dark:text-red-400 mt-1">
+                            Overdue
+                          </span>
+                        </div>
+                      ) : (
+                        <div className="text-slate-600 dark:text-slate-300">
+                          <p>{new Date(borrow.dueDate).toLocaleDateString("id-ID", { dateStyle: "medium" })}</p>
+                          <p className="text-xs text-slate-500 mt-0.5">{new Date(borrow.dueDate).toLocaleTimeString("id-ID", { timeStyle: "short" })}</p>
+                        </div>
+                      )}
                     </td>
                     <td className="px-6 py-4">
                       <StatusBadge status={borrow.status} />
@@ -172,7 +185,8 @@ export default function BorrowingsPage() {
                       </td>
                     )}
                   </tr>
-                ))
+                  );
+                })
               )}
             </tbody>
           </table>
