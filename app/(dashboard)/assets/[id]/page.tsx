@@ -126,7 +126,7 @@ export default function AssetDetailPage() {
                 {asset.borrowings.map((borrow: any) => (
                   <div key={borrow.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-100 dark:border-slate-700/50">
                     <div>
-                      <p className="font-medium text-slate-900 dark:text-white text-sm">{borrow.user.name}</p>
+                      <p className="font-medium text-slate-900 dark:text-white text-sm">{borrow.user?.name}</p>
                       <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                         {new Date(borrow.borrowDate).toLocaleDateString("id-ID")} - {borrow.returnDate ? new Date(borrow.returnDate).toLocaleDateString("id-ID") : "Belum dikembalikan"}
                       </p>
@@ -158,7 +158,7 @@ export default function AssetDetailPage() {
                       <span className="text-xs text-slate-500">{new Date(issue.createdAt).toLocaleDateString("id-ID")}</span>
                     </div>
                     <p className="font-medium text-sm text-slate-900 dark:text-white mb-1 line-clamp-1">{issue.title}</p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">Pelapor: {issue.reporter.name}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">Pelapor: {issue.user?.name}</p>
                   </div>
                 ))}
               </div>

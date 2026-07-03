@@ -1,4 +1,4 @@
-import { NextResponse } from "next";
+import { NextResponse } from "next/server";
 import { generateQR } from "@/lib/qrcode";
 
 export async function GET(

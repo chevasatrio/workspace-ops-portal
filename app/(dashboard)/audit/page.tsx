@@ -73,8 +73,8 @@ export default function AuditLogPage() {
                   </TableCell>
                   <TableCell>
                     <Dialog>
-                      <DialogTrigger asChild>
-                        <Button variant="outline" size="sm">View detail</Button>
+                      <DialogTrigger render={<Button variant="outline" size="sm" />}>
+                        View detail
                       </DialogTrigger>
                       <DialogContent className="max-w-md">
                         <DialogHeader>

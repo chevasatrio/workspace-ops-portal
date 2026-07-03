@@ -38,15 +38,13 @@ export function NotificationBell() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative">
+      <DropdownMenuTrigger render={<Button variant="ghost" size="icon" className="relative" />}>
           <Bell className="w-5 h-5" />
           {unreadCount > 0 && (
             <span className="absolute top-1 right-1 flex h-3 w-3 items-center justify-center rounded-full bg-destructive text-[10px] font-bold text-destructive-foreground">
               {unreadCount > 9 ? "9+" : unreadCount}
             </span>
           )}
-        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-80">
         <DropdownMenuLabel>Notifications</DropdownMenuLabel>
@@ -57,17 +55,15 @@ export function NotificationBell() {
           </div>
         ) : (
           notifications.slice(0, 5).map((notif) => (
-            <DropdownMenuItem key={notif.id} asChild className="p-3 cursor-pointer">
-              <Link href={notif.link || "/notifications"} className="flex flex-col items-start gap-1">
+            <DropdownMenuItem key={notif.id} render={<Link href={notif.link || "/notifications"} className="flex flex-col items-start gap-1" />} className="p-3 cursor-pointer">
                 <span className="font-medium text-sm">{notif.title}</span>
                 <span className="text-xs text-muted-foreground line-clamp-2">{notif.message}</span>
-              </Link>
             </DropdownMenuItem>
           ))
         )}
         <DropdownMenuSeparator />
-        <DropdownMenuItem asChild className="cursor-pointer justify-center text-primary">
-          <Link href="/notifications">View all notifications</Link>
+        <DropdownMenuItem render={<Link href="/notifications" />} className="cursor-pointer justify-center text-primary">
+          View all notifications
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

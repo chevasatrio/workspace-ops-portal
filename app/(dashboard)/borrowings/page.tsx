@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { Plus, CheckCircle, XCircle, RefreshCw } from "lucide-react";
+import { Plus, CheckCircle, XCircle, RefreshCw, ClipboardList } from "lucide-react";
 import { StatusBadge } from "@/components/StatusBadge";
 import EmptyState from "@/components/EmptyState";
 export default function BorrowingsPage() {
