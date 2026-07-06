@@ -14,7 +14,7 @@ import {
 import { ThemeToggle } from "./ThemeToggle";
 
 const navItems = [
-  { name: "Dashboard", href: "/", icon: LayoutDashboard },
+  { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "Aset", href: "/assets", icon: MonitorSmartphone },
   { name: "Peminjaman", href: "/borrowings", icon: ClipboardList },
   { name: "Issue Tracker", href: "/issues", icon: AlertCircle },
